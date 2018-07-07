@@ -1,5 +1,5 @@
 #define ADR_I2C_FC113 0x27
-#include "lcd1602_fc113.h"
+#include "lcd1602_fc113_sm.h"
 
 //==========================================================================
 void LCD1602_Write_Instruction_4bit(uint8_t inputE0)
