@@ -10,21 +10,17 @@ typedef struct
 	uint8_t 			 device_i2c_address;
 } lcd1602_fc113_struct;
 
+void LCD1602_Print_Line             (lcd1602_fc113_struct *lcd1602_fc113_handler, char *DataChar, uint8_t);
+
 void LCD1602_Init                   (lcd1602_fc113_struct *lcd1602_fc113_handler );
+void I2C_ScanBus                    (lcd1602_fc113_struct *lcd1602_fc113_handler );
 void LCD1602_Clear                  (lcd1602_fc113_struct *lcd1602_fc113_handler );
 void LCD1602_Cursor_Return          (lcd1602_fc113_struct *lcd1602_fc113_handler );
-void I2C_ScanBus                    (lcd1602_fc113_struct *lcd1602_fc113_handler );
 
-void LCD1602_Write_Instruction_4bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-void LCD1602_Write_Instruction_8bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-void LCD1602_Write_Data             (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-
-void LCD1602_Cursor_Shift_Right     (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-void LCD1602_Cursor_Shift_Left      (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-void LCD1602_Display_Shift_Left     (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-void LCD1602_Display_Shift_Right    (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
-
-void LCD1602_Print_Char             (lcd1602_fc113_struct *lcd1602_fc113_handler, char *DataChar, uint8_t);
+void LCD1602_Display_Shift_Left     (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t step);
+void LCD1602_Display_Shift_Right    (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t step);
+void LCD1602_Cursor_Shift_Left      (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t step);
+void LCD1602_Cursor_Shift_Right     (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t step);
 
 	/*
 	#define ADR_I2C_FC113 0x27
