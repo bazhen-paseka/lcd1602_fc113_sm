@@ -181,7 +181,11 @@ void LCD1602_Print_Line(lcd1602_fc113_struct *lcd1602_fc113_handler, char* DataC
 {
 	for (uint8_t i=0; i<SizeChar; i++)
 	{
-		if (DataChar[i] != '\n')
+		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') )
+		{
+			LCD1602_Write_Data(lcd1602_fc113_handler, ' ');	// print "Space"
+		}
+		else
 		{
 			LCD1602_Write_Data(lcd1602_fc113_handler, DataChar[i]);
 		}
