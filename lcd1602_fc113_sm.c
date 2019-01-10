@@ -137,6 +137,11 @@ void I2C_ScanBus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 	char i2c_scan_buff[32];
 	int  i2c_scan_device = 0;
 
+	sprintf(i2c_scan_buff,"Start scan I2C\n");
+	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
+
+	HAL_Delay(500);
+
 	for ( uint8_t i = 0x07; i < 0x78; i++)
 	{
 		if (HAL_I2C_IsDeviceReady(lcd1602_fc113_handler->i2c, i << 1, 10, 100) == HAL_OK)
@@ -168,7 +173,7 @@ void I2C_ScanBus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 		} //end if HAL I2C
 
 	}// end for i
-	sprintf(i2c_scan_buff,"Scan I2C End.\n");
+	sprintf(i2c_scan_buff,"Scan I2C End\n");
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
 	HAL_Delay(500);
