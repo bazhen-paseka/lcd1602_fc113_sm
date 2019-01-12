@@ -173,7 +173,7 @@ void I2C_ScanBus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 		} //end if HAL I2C
 
 	}// end for i
-	sprintf(i2c_scan_buff,"Scan I2C End\n");
+	sprintf(i2c_scan_buff,"Scan I2C End\r\n");
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
 	HAL_Delay(500);
@@ -188,7 +188,7 @@ void LCD1602_Print_Line(lcd1602_fc113_struct *lcd1602_fc113_handler, char* DataC
 	{
 		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') )
 		{
-			LCD1602_Write_Data(lcd1602_fc113_handler, ' ');	// print "Space"
+			//LCD1602_Write_Data(lcd1602_fc113_handler, ' ');	// print "Space"
 		}
 		else
 		{
