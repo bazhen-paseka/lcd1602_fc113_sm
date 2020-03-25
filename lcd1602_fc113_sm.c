@@ -1,4 +1,4 @@
-#include <string.h>
+
 #include "lcd1602_fc113_sm.h"
 
 static void LCD1602_Write_Data             (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
@@ -132,7 +132,7 @@ void LCD1602_Display_Shift_Left(lcd1602_fc113_struct *lcd1602_fc113_handler, uin
 //==========================================================================
 
 //======================================================================
-void I2C_ScanBus(lcd1602_fc113_struct *lcd1602_fc113_handler)
+void I2C_ScanBus_to_LCD1602(lcd1602_fc113_struct *lcd1602_fc113_handler)
 {
 	char i2c_scan_buff[32];
 	int  i2c_scan_device = 0;
@@ -177,7 +177,7 @@ void I2C_ScanBus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
 	HAL_Delay(500);
-}// end I2C_ScanBus
+}// end I2C_ScanBus_to_LCD1602
 //======================================================================
 
 //=================================================================
