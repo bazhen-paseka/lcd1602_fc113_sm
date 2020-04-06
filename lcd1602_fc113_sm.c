@@ -194,33 +194,33 @@ void LCD1602_Scan_I2C_to_UART(lcd1602_fc113_struct * _lcd1602_fc113_handler, UAR
 void LCD1602_scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 {
 	char i2c_scan_buff[32];
-	int  i2c_scan_device = 0;
+	int  serial_number_u8 = 0;
 
 	sprintf(i2c_scan_buff,"I2C scan\n");
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
 	HAL_Delay(500);
 
-	for ( uint8_t i = 0x07; i < 0x78; i++)
+	for ( uint8_t i2c_dev_addr_u8 = 0x07; i2c_dev_addr_u8 < 0x78; i2c_dev_addr_u8++)
 	{
-		if (HAL_I2C_IsDeviceReady(lcd1602_fc113_handler->i2c, i << 1, 10, 100) == HAL_OK)
+		if (HAL_I2C_IsDeviceReady(lcd1602_fc113_handler->i2c, i2c_dev_addr_u8 << 1, 10, 100) == HAL_OK)
 		{
-			i2c_scan_device++;
-			switch (i)
+			serial_number_u8++;
+			switch (i2c_dev_addr_u8)
 			{
-				case 0x23: sprintf(i2c_scan_buff,"%d) BH-1750", i2c_scan_device ); break;
-				case 0x27: sprintf(i2c_scan_buff,"%d) FC-113 ", i2c_scan_device ); break;
-				//case 0x57: sprintf(i2c_scan_buff,"%d) AT24C32", i2c_scan_device ); break;
-				case 0x57: sprintf(i2c_scan_buff,"%d) MAX30100", i2c_scan_device ); break;
-				case 0x68: sprintf(i2c_scan_buff,"%d) DS-3231", i2c_scan_device ); break;
-				case 0x76: sprintf(i2c_scan_buff,"%d) BMP-280", i2c_scan_device ); break;
-				case 0x77: sprintf(i2c_scan_buff,"%d) BMP-180", i2c_scan_device ); break;
-				default:   sprintf(i2c_scan_buff,"%d) Unknown", i2c_scan_device ); break;
+				case 0x23: sprintf(i2c_scan_buff,"%d) BH-1750", serial_number_u8 ); break;
+				case 0x27: sprintf(i2c_scan_buff,"%d) FC-113 ", serial_number_u8 ); break;
+				//case 0x57: sprintf(i2c_scan_buff,"%d) AT24C32", serial_number_u8 ); break;
+				case 0x57: sprintf(i2c_scan_buff,"%d) MAX30100", serial_number_u8 ); break;
+				case 0x68: sprintf(i2c_scan_buff,"%d) DS-3231", serial_number_u8 ); break;
+				case 0x76: sprintf(i2c_scan_buff,"%d) BMP-280", serial_number_u8 ); break;
+				case 0x77: sprintf(i2c_scan_buff,"%d) BMP-180", serial_number_u8 ); break;
+				default:   sprintf(i2c_scan_buff,"%d) Unknown", serial_number_u8 ); break;
 			}// end switch
 
 			LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
-			if (i2c_scan_device%2 == 0)
+			if (serial_number_u8%2 == 0)
 			{
 				HAL_Delay(1000);
 				LCD1602_Clear(lcd1602_fc113_handler);
