@@ -131,13 +131,72 @@ void LCD1602_Display_Shift_Left(lcd1602_fc113_struct *lcd1602_fc113_handler, uin
 }
 //==========================================================================
 
+void LCD1602_Print_Line(lcd1602_fc113_struct *lcd1602_fc113_handler, char* DataChar, uint8_t SizeChar)
+{
+	for (uint8_t i=0; i<SizeChar; i++)
+	{
+		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') )
+		{
+			//LCD1602_Write_Data(lcd1602_fc113_handler, ' ');	// print "Space"
+		}
+		else
+		{
+			LCD1602_Write_Data(lcd1602_fc113_handler, DataChar[i]);
+		}
+
+		if (DataChar[i] == '\n')
+		{
+			LCD1602_Cursor_Shift_Right(lcd1602_fc113_handler, 40-i);
+		}
+
+		if (i == 15)
+		{
+			LCD1602_Cursor_Shift_Right(lcd1602_fc113_handler, 40-i-1);
+		}
+	}
+}
+//=================================================================
+
+void LCD1602_Scan_I2C_to_UART(lcd1602_fc113_struct * _lcd1602_fc113_handler, UART_HandleTypeDef * _huart) {
+	char DataChar[32];
+	int device_serial_numb = 0;
+
+	sprintf(DataChar,"Start scan I2C\r\n");
+	HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
+	//HAL_Delay(100);
+
+	for ( int device_i2c_address_int = 0x07; device_i2c_address_int < 0x78; device_i2c_address_int++) {
+		if (HAL_I2C_IsDeviceReady( _lcd1602_fc113_handler->i2c , device_i2c_address_int << 1, 10, 100) == HAL_OK) {
+			device_serial_numb++;
+			switch (device_i2c_address_int) {
+				case 0x23: sprintf(DataChar,"%d) BH1750", device_serial_numb ); break;
+				case 0x27: sprintf(DataChar,"%d) FC113 ", device_serial_numb ); break;
+				case 0x38: sprintf(DataChar,"%d) PCF8574", device_serial_numb ); break;
+				//case 0x57: sprintf(DataChar,"%d) AT24C32", device_serial_numb ); break;
+				case 0x57: sprintf(DataChar,"%d) MAX30100", device_serial_numb ); break;
+				case 0x68: sprintf(DataChar,"%d) DS3231", device_serial_numb ); break;
+				//case 0x68: sprintf(DataChar_I2C,"%d) MPU9250", device_serial_numb ); break;
+				case 0x76: sprintf(DataChar,"%d) BMP280", device_serial_numb ); break;
+				case 0x77: sprintf(DataChar,"%d) BMP180", device_serial_numb ); break;
+				default:   sprintf(DataChar,"%d) Unknown", device_serial_numb ); break;
+			}// end switch
+			sprintf(DataChar,"%s\tAdr: %x\r\n", DataChar, device_i2c_address_int);
+			HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
+			HAL_Delay(10);
+		} //end if HAL I2C1
+	} // end for device_i2c_address_int i2c1
+	sprintf(DataChar,"End scan I2C\r\n");
+	HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
+	//HAL_Delay(100);
+}// end void I2C_ScanBus
 //======================================================================
+
 void LCD1602_scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 {
 	char i2c_scan_buff[32];
 	int  i2c_scan_device = 0;
 
-	sprintf(i2c_scan_buff,"I2C scan start\n");
+	sprintf(i2c_scan_buff,"I2C scan\n");
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
 	HAL_Delay(500);
@@ -174,70 +233,9 @@ void LCD1602_scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 		} //end if HAL I2C
 
 	}// end for i
-	sprintf(i2c_scan_buff,"I2C  scan  end\r\n");
+	sprintf(i2c_scan_buff,"I2C end.\r\n");
 	LCD1602_Print_Line(lcd1602_fc113_handler, i2c_scan_buff, strlen(i2c_scan_buff));
 
-	HAL_Delay(500);
+	//HAL_Delay(500);
 }// end LCD1602_scan_I2C_bus
 //======================================================================
-
-//=================================================================
-
-void LCD1602_Print_Line(lcd1602_fc113_struct *lcd1602_fc113_handler, char* DataChar, uint8_t SizeChar)
-{
-	for (uint8_t i=0; i<SizeChar; i++)
-	{
-		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') )
-		{
-			//LCD1602_Write_Data(lcd1602_fc113_handler, ' ');	// print "Space"
-		}
-		else
-		{
-			LCD1602_Write_Data(lcd1602_fc113_handler, DataChar[i]);
-		}
-
-		if (DataChar[i] == '\n')
-		{
-			LCD1602_Cursor_Shift_Right(lcd1602_fc113_handler, 40-i);
-		}
-
-		if (i == 15)
-		{
-			LCD1602_Cursor_Shift_Right(lcd1602_fc113_handler, 40-i-1);
-		}
-	}
-}
-//=================================================================
-
-void LCD1602_Scan_I2C_to_UART(lcd1602_fc113_struct * _lcd1602_fc113_handler, UART_HandleTypeDef * _huart) {
-	char DataChar[32];
-	int device_serial_numb = 0;
-
-	sprintf(DataChar,"\tStart scan I2C\r\n");
-	HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
-	HAL_Delay(100);
-
-	for ( int device_i2c_address_int = 0x07; device_i2c_address_int < 0x78; device_i2c_address_int++) {
-		if (HAL_I2C_IsDeviceReady( _lcd1602_fc113_handler->i2c , device_i2c_address_int << 1, 10, 100) == HAL_OK) {
-			device_serial_numb++;
-			switch (device_i2c_address_int) {
-				case 0x23: sprintf(DataChar,"%d) BH1750", device_serial_numb ); break;
-				case 0x27: sprintf(DataChar,"%d) FC113 ", device_serial_numb ); break;
-				case 0x38: sprintf(DataChar,"%d) PCF8574", device_serial_numb ); break;
-				//case 0x57: sprintf(DataChar,"%d) AT24C32", device_serial_numb ); break;
-				case 0x57: sprintf(DataChar,"%d) MAX30100", device_serial_numb ); break;
-				case 0x68: sprintf(DataChar,"%d) DS3231", device_serial_numb ); break;
-				//case 0x68: sprintf(DataChar_I2C,"%d) MPU9250", device_serial_numb ); break;
-				case 0x76: sprintf(DataChar,"%d) BMP280", device_serial_numb ); break;
-				case 0x77: sprintf(DataChar,"%d) BMP180", device_serial_numb ); break;
-				default:   sprintf(DataChar,"%d) Unknown", device_serial_numb ); break;
-			}// end switch
-			sprintf(DataChar,"%s Adr: %x\r\n", DataChar, device_i2c_address_int);
-			HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
-			HAL_Delay(10);
-		} //end if HAL I2C1
-	} // end for device_i2c_address_int i2c1
-	sprintf(DataChar,"\tEnd scan I2C\r\n");
-	HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 100);
-	//HAL_Delay(100);
-}// end void I2C_ScanBus
