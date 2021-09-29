@@ -191,7 +191,7 @@ void LCD1602_Scan_I2C_to_UART(lcd1602_fc113_struct * _lcd1602_fc113_handler, UAR
 }// end void I2C_ScanBus
 //======================================================================
 
-void LCD1602_scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler)
+void LCD1602_Scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler)
 {
 	char i2c_scan_buff[32];
 	int  serial_number_u8 = 0;
