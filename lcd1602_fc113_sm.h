@@ -47,7 +47,7 @@ void LCD1602_Cursor_Shift_Right     (lcd1602_fc113_struct *lcd1602_fc113_handler
 		};
 
 		LCD1602_Init(&h1_lcd1602_fc113);
-		LCD1602_scan_I2C_bus(&h1_lcd1602_fc113);
+		LCD1602_Scan_I2C_bus(&h1_lcd1602_fc113);
 
 		LCD1602_Clear(&h1_lcd1602_fc113);
 		sprintf(uart_buffer_c,"Steps Counter\r\n");
