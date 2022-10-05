@@ -2,7 +2,7 @@
 #define LCD1602_FC113_SM_H_
 
 //*******************************************************************
-
+#ifdef LCD1602
 	#include "stm32f1xx_hal.h"
 	#include "i2c.h"
 	#include <string.h>
@@ -60,4 +60,5 @@ void LCD1602_Cursor_Shift_Right     (lcd1602_fc113_struct *lcd1602_fc113_handler
 		LCD1602_Clear(&h1_lcd1602_fc113);
 	*/
 
+#endif
 #endif
