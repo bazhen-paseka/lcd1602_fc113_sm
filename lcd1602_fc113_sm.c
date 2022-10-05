@@ -1,5 +1,6 @@
 
 #include "lcd1602_fc113_sm.h"
+#ifdef LCD1602
 
 static void LCD1602_Write_Data             (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
 static void LCD1602_Write_Instruction_4bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
@@ -140,7 +141,7 @@ void LCD1602_Print_Line( 	lcd1602_fc113_struct*	lcd1602_fc113_handler	,
 
 void LCD1602_Scan_I2C_to_UART(	lcd1602_fc113_struct * 	_lcd1602_fc113_handler	,
 								UART_HandleTypeDef* 	_huart					) {
-	char DataChar[0xFF];
+	char DataChar[100];
 	int device_serial_numb = 0;
 
 	sprintf(DataChar,"Start scan I2C:\r\n" ) ;
@@ -161,8 +162,9 @@ void LCD1602_Scan_I2C_to_UART(	lcd1602_fc113_struct * 	_lcd1602_fc113_handler	,
 				case 0x77: sprintf(DataChar,"%d) BMP180", device_serial_numb ); break;
 				default:   sprintf(DataChar,"%d) Unknown", device_serial_numb ); break;
 			}// end switch
-			sprintf(DataChar,"%s\tAdr: %x\r\n", DataChar, device_i2c_address_int ) ;
-			HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 1000 ) ;
+			char DataChar2[150];
+			sprintf(DataChar2,"%s\tAdr: %x\r\n", DataChar, device_i2c_address_int ) ;
+			HAL_UART_Transmit(_huart, (uint8_t *)DataChar2, strlen(DataChar2), 1000 ) ;
 			HAL_Delay(10);
 		} //end if HAL I2C1
 	} // end for device_i2c_address_int i2c1
@@ -213,3 +215,4 @@ void LCD1602_Scan_I2C_bus(lcd1602_fc113_struct *lcd1602_fc113_handler) {
 *                          			END
 **************************************************************************
 */
+#endif
