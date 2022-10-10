@@ -1,7 +1,6 @@
 
 #include "lcd1602_fc113_sm.h"
 #ifdef LCD1602
-
 static void LCD1602_Write_Data             (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
 static void LCD1602_Write_Instruction_4bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
 static void LCD1602_Write_Instruction_8bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
