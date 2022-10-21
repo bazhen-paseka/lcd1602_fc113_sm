@@ -2,13 +2,13 @@
 #define LCD1602_FC113_SM_H_
 
 //*******************************************************************
-#ifdef LCD1602
-	#include "stm32f1xx_hal.h"
-	#include "i2c.h"
-	#include <string.h>
-	#include "stdio.h"
 
+	#include "main.h"
 	#include "lcd1602_local_config.h"
+	#include "string.h"
+	#include "stdio.h"
+#ifdef LCD1602
+	#include "i2c.h"
 
 //*******************************************************************
 
