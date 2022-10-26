@@ -1,7 +1,6 @@
 
 #include "lcd1602_fc113_sm.h"
 #ifdef LCD1602
-
 static void LCD1602_Write_Data             (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
 static void LCD1602_Write_Instruction_4bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
 static void LCD1602_Write_Instruction_8bit (lcd1602_fc113_struct *lcd1602_fc113_handler, uint8_t input);
@@ -139,8 +138,8 @@ void LCD1602_Print_Line( 	lcd1602_fc113_struct*	lcd1602_fc113_handler	,
 }
 //=================================================================
 
-void LCD1602_Scan_I2C_to_UART(	lcd1602_fc113_struct * 	_lcd1602_fc113_handler	,
-								UART_HandleTypeDef* 	_huart					) {
+void LCD1602_Scan_I2C_to_UART(	I2C_HandleTypeDef*	_i2c	,
+								UART_HandleTypeDef* _huart	) {
 	char DataChar[100];
 	int device_serial_numb = 0;
 
@@ -148,12 +147,13 @@ void LCD1602_Scan_I2C_to_UART(	lcd1602_fc113_struct * 	_lcd1602_fc113_handler	,
 	HAL_UART_Transmit(_huart, (uint8_t *)DataChar, strlen(DataChar), 1000 ) ;
 
 	for ( int device_i2c_address_int = 0x07; device_i2c_address_int < 0x78; device_i2c_address_int++) {
-		if (HAL_I2C_IsDeviceReady( _lcd1602_fc113_handler->i2c , device_i2c_address_int << 1, 10, 100) == HAL_OK) {
+		if (HAL_I2C_IsDeviceReady( _i2c , device_i2c_address_int << 1, 10, 100) == HAL_OK) {
 			device_serial_numb++;
 			switch (device_i2c_address_int) {
 				case 0x23: sprintf(DataChar,"%d) BH1750", device_serial_numb ); break;
 				case 0x27: sprintf(DataChar,"%d) FC113 ", device_serial_numb ); break;
 				case 0x38: sprintf(DataChar,"%d) PCF8574", device_serial_numb ); break;
+				case 0x3F: sprintf(DataChar,"%d) LCD1602", device_serial_numb ); break;
 				//case 0x57: sprintf(DataChar,"%d) AT24C32", device_serial_numb ); break;
 				case 0x57: sprintf(DataChar,"%d) MAX30100", device_serial_numb ); break;
 				case 0x68: sprintf(DataChar,"%d) DS3231", device_serial_numb ); break;

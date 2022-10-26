@@ -2,13 +2,13 @@
 #define LCD1602_FC113_SM_H_
 
 //*******************************************************************
-#ifdef LCD1602
-	#include "stm32f1xx_hal.h"
-	#include "i2c.h"
-	#include <string.h>
-	#include "stdio.h"
 
+	#include "main.h"
 	#include "lcd1602_local_config.h"
+	#include "string.h"
+	#include "stdio.h"
+#ifdef LCD1602
+	#include "i2c.h"
 
 //*******************************************************************
 
@@ -24,7 +24,7 @@ void LCD1602_Print_Line             (lcd1602_fc113_struct *lcd1602_fc113_handler
 
 void LCD1602_Init                   (lcd1602_fc113_struct *lcd1602_fc113_handler );
 void LCD1602_Scan_I2C_bus			(lcd1602_fc113_struct *lcd1602_fc113_handler );
-void LCD1602_Scan_I2C_to_UART		(lcd1602_fc113_struct *lcd1602_fc113_handler, UART_HandleTypeDef * _huart);
+void LCD1602_Scan_I2C_to_UART		(I2C_HandleTypeDef*	_i2c, UART_HandleTypeDef * _huart);
 void LCD1602_Clear                  (lcd1602_fc113_struct *lcd1602_fc113_handler );
 void LCD1602_Cursor_Return          (lcd1602_fc113_struct *lcd1602_fc113_handler );
 
