@@ -115,7 +115,7 @@ void LCD1602_Print_Line( 	lcd1602_handle*	hlcd1602						,
 							uint8_t 				SizeChar 				,
 							LED_status		 		led_st					) {
 	for (uint8_t i=0; i<SizeChar; i++) {
-		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') ) {
+		if ( (DataChar[i] == '\r') || (DataChar[i] == '\n') || (DataChar[i] == '\0')  ) {
 			//LCD1602_Write_Data(hlcd1602, ' ');	// print "Space"
 		} else {
 			LCD1602_Write_Data(hlcd1602, DataChar[i], led_st);
