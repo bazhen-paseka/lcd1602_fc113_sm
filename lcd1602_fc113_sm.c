@@ -146,6 +146,7 @@ void LCD1602_Scan_I2C_to_UART(	I2C_HandleTypeDef*	_i2c	,
 			switch (device_i2c_address_int) {
 				case 0x23: sprintf(DataChar,"%d) BH1750", device_serial_numb ); break;
 				case 0x27: sprintf(DataChar,"%d) FC113 ", device_serial_numb ); break;
+				case 0x20: sprintf(DataChar,"%d) PCF8574", device_serial_numb ); break;
 				case 0x38: sprintf(DataChar,"%d) PCF8574", device_serial_numb ); break;
 				case 0x3F: sprintf(DataChar,"%d) LCD1602", device_serial_numb ); break;
 				//case 0x57: sprintf(DataChar,"%d) AT24C32", device_serial_numb ); break;
