@@ -57,6 +57,14 @@ void LCD1602_Write_Instruction_8bit(lcd1602_handle *hlcd1602, uint8_t _input_u8)
 }
 //==========================================================================
 
+void LCD1602_struct_init(	lcd1602_handle*		_lcd	,
+							I2C_HandleTypeDef*	_i2c		,
+							uint8_t				_addr		) {
+	_lcd->i2c 				=	_i2c 	;
+	_lcd->device_i2c_address=	_addr 	;
+}
+/******************************************************/
+
 void LCD1602_Init(lcd1602_handle *hlcd1602 ) {
 	HAL_Delay(15);
 	LCD1602_Write_Instruction_4bit(hlcd1602, 0x30);	// step 1: 0011 0000

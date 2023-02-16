@@ -24,6 +24,10 @@
 
 //*******************************************************************
 
+void LCD1602_struct_init		(	lcd1602_handle		*_lcd	,
+									I2C_HandleTypeDef	*_i2c	,
+									uint8_t				_addr	);
+
 void LCD1602_Init                ( lcd1602_handle*	hlcd1602 );
 void LCD1602_Print_Line          ( lcd1602_handle*	hlcd1602 ,
 								   char*			DataChar ,
