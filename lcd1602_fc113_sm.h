@@ -4,7 +4,7 @@
 //*******************************************************************
 
 	#include "main.h"
-	#include "lcd1602_local_config.h"
+	#include "local_config.h"
 	#include "string.h"
 	#include "stdio.h"
 #ifdef LCD1602
